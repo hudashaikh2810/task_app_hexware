@@ -1,6 +1,7 @@
 package com.asset.service;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 
@@ -36,7 +37,12 @@ public class TaskService {
 		t.setStatus(Status.InProgress);
 	if(dto.getStatus().equalsIgnoreCase("Completed"))
 		t.setStatus(Status.Completed);
-		t.setDueDate(LocalDate.now());
+	String date=dto.getDate();
+	
+
+	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+	LocalDate dateTime = LocalDate.parse(date, formatter);
+	t.setDueDate(dateTime);
 		return taskRepository.save(t);
 	}
 	public void validateTask(TaskDto t) throws InvalidInputException
@@ -51,6 +57,11 @@ public class TaskService {
 		if(t.getDescription()==null||t.getDescription().equals(""))
 		{
 			throw new InvalidInputException("Task description should have valid value");
+
+		}
+		if(t.getDate()==null||t.getDate().equals(""))
+		{
+			throw new InvalidInputException("Task due date should have valid value");
 
 		}
 		String priority=t.getPriority();
@@ -81,6 +92,7 @@ public class TaskService {
 		{
 			throw new InvalidInputException("Task status can be medium,inprogress,complted");
 		}
+		
 	}
 	public List<Task> getAll() throws InvalidIdException {
 		// TODO Auto-generated method stub
@@ -109,6 +121,37 @@ public class TaskService {
 		}
 		Task t=optionalTask.get();
 		taskRepository.deleteById(t.getId());
+		return t;
+	}
+	public Task updateTask(int id, TaskDto taskDto) throws InvalidIdException {
+		// TODO Auto-generated method stub
+		Optional<Task> optionalTask=taskRepository.findTaskById(id);
+		if(optionalTask.isEmpty())
+		{
+			throw new InvalidIdException("No task available with this id cannot perform deletion");
+		}
+		Task t=optionalTask.get();
+		t.setTitle(taskDto.getTitle());
+		t.setDescription(taskDto.getDescription());
+		if(taskDto.getPriority().equalsIgnoreCase("Low"))
+			t.setPriority(Priority.Low);
+		if(taskDto.getPriority().equalsIgnoreCase("High"))
+			t.setPriority(Priority.High);
+		if(taskDto.getPriority().equalsIgnoreCase("Medium"))
+			t.setPriority(Priority.Medium);
+		if(taskDto.getStatus().equalsIgnoreCase("Pending"))
+			t.setStatus(Status.Pending);
+		if(taskDto.getStatus().equalsIgnoreCase("InProgress"))
+			t.setStatus(Status.InProgress);
+		if(taskDto.getStatus().equalsIgnoreCase("Completed"))
+			t.setStatus(Status.Completed);
+		String date=taskDto.getDate();
+		
+
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+		LocalDate dateTime = LocalDate.parse(date, formatter);
+		t.setDueDate(dateTime);
+		t=taskRepository.save(t);
 		return t;
 	}
 

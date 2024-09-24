@@ -3,6 +3,7 @@ package com.asset.dto;
 public class TaskDto {
 private String title;
 private String description;
+private String date;
 public TaskDto() {
 	super();
 	// TODO Auto-generated constructor stub
@@ -19,6 +20,12 @@ public String getTitle() {
 }
 public void setTitle(String title) {
 	this.title = title;
+}
+public String getDate() {
+	return date;
+}
+public void setDate(String date) {
+	this.date = date;
 }
 public String getDescription() {
 	return description;

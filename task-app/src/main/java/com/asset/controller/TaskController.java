@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -78,6 +79,27 @@ public ResponseEntity<?> deleteTaskById(@PathVariable int id,MessageDto dto)
 		dto.setMsg(e.getMessage());
 		return ResponseEntity.badRequest().body(dto);
 
+	}
+}
+@PutMapping("/update/{id}")
+public ResponseEntity<?> updateTaskById(@RequestBody TaskDto taskDto,@PathVariable int id,MessageDto dto)
+{
+	try {
+		taskService.validateTask(taskDto);
+		Task t=taskService.updateTask(id,taskDto);
+		return ResponseEntity.ok("Task "+t+" has been updated");
+
+	} catch (InvalidIdException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+		dto.setMsg(e.getMessage());
+		return ResponseEntity.badRequest().body(dto);
+
+	} catch (InvalidInputException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+		dto.setMsg(e.getMessage());
+		return ResponseEntity.badRequest().body(dto);
 	}
 }
 
