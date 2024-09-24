@@ -100,5 +100,16 @@ public class TaskService {
 		}
 		return optionalTask.get();
 	}
+	public Task deleteTaskById(int id) throws InvalidIdException {
+		// TODO Auto-generated method stub
+		Optional<Task> optionalTask=taskRepository.findTaskById(id);
+		if(optionalTask.isEmpty())
+		{
+			throw new InvalidIdException("No task available with this id cannot perform deletion");
+		}
+		Task t=optionalTask.get();
+		taskRepository.deleteById(t.getId());
+		return t;
+	}
 
 }

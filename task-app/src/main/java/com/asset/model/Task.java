@@ -26,6 +26,11 @@ public class Task {
 	@Enumerated(EnumType.STRING)
 	private Status status;
 	
+	@Override
+	public String toString() {
+		return "Task [id=" + id + ", title=" + title + ", description=" + description + ", dueDate=" + dueDate
+				+ ", priority=" + priority + ", status=" + status + "]";
+	}
 	public Task() {
 		super();
 		// TODO Auto-generated constructor stub
