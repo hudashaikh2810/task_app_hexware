@@ -2,6 +2,7 @@ package com.asset.service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -89,6 +90,15 @@ public class TaskService {
 			throw new InvalidIdException("No task to show");
 		}
 		return allTask;
+	}
+	public Task getTaskById(int id) throws InvalidIdException
+	{
+		Optional<Task> optionalTask=taskRepository.findTaskById(id);
+		if(optionalTask.isEmpty())
+		{
+			throw new InvalidIdException("No task available with this id");
+		}
+		return optionalTask.get();
 	}
 
 }
