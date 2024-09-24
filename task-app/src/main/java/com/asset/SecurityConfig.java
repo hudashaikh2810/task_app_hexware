@@ -32,7 +32,8 @@ public class SecurityConfig {
                         .requestMatchers("/admin/hello").hasRole("ADMIN")
                         .requestMatchers("/user/hello").hasAnyRole("USER", "ADMIN")
                         .requestMatchers("/task/add").hasRole("ADMIN")
-                        .requestMatchers("/employee/asset/request/{assetId}").hasRole("EMPLOYEE")
+                        .requestMatchers("/task/all").hasRole("ADMIN")
+
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session

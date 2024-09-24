@@ -1,6 +1,7 @@
 package com.asset.service;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.asset.dto.TaskDto;
 import com.asset.enums.Priority;
 import com.asset.enums.Status;
+import com.asset.exception.InvalidIdException;
 import com.asset.exception.InvalidInputException;
 import com.asset.model.Task;
 import com.asset.repo.TaskRepository;
@@ -78,6 +80,15 @@ public class TaskService {
 		{
 			throw new InvalidInputException("Task status can be medium,inprogress,complted");
 		}
+	}
+	public List<Task> getAll() throws InvalidIdException {
+		// TODO Auto-generated method stub
+		List<Task> allTask=taskRepository.findAll();
+		if(allTask.isEmpty())
+		{
+			throw new InvalidIdException("No task to show");
+		}
+		return allTask;
 	}
 
 }
