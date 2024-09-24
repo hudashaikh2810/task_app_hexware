@@ -1,4 +1,4 @@
-package com.jwt.securirty;
+package com.asset;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -47,12 +47,14 @@ public class APITest {
 		t.setDueDate(dateTime);
 		t.setPriority(Priority.Low);
 		t.setStatus(Status.Completed);
-		
+		System.out.println(t);
 		when(taskService.addTask(dto)).thenReturn(t);
 		Task tActual=taskService.addTask(dto);
-		assertNotNull(tActual);
+		System.out.println(tActual);
+		assertNotNull(taskService.addTask(dto));
 		
 	}
+	
 	
 	@Test
 	public void getAllTask()
@@ -86,8 +88,9 @@ public class APITest {
 	}
 	
 	}
+
 	@Test
-	public void getSpeicifcTask() throws InvalidIdException
+	public void getSpeicifcTask() 
 	{
 		List<Task> list=new ArrayList<>();
 		Task t=new Task();
@@ -98,22 +101,29 @@ public class APITest {
 		t.setStatus(Status.Completed);
 		t.setDueDate(LocalDate.now());
 		list.add(t);
-		t=new Task();
-		t.setId(2);
-		t.setTitle("do it");
-		t.setDescription("have lot to do");
-		t.setPriority(Priority.High);
-		t.setStatus(Status.Pending);
-		t.setDueDate(LocalDate.now());
-		list.add(t);
-		when(taskService.getTaskById(2)).thenReturn(t);
-		Task actual=taskService.getTaskById(2);
-		assertEquals(t.getId(),actual.getId());
+		Task t1=new Task();
+		t1.setId(2);
+		t1.setTitle("do it");
+		t1.setDescription("have lot to do");
+		t1.setPriority(Priority.High);
+		t1.setStatus(Status.Pending);
+		t1.setDueDate(LocalDate.now());
+		list.add(t1);
+		try {
+			when(taskService.getTaskById(2)).thenReturn(t1);
+			Task actual=taskService.getTaskById(2);
+			assertEquals(t1.getId(),actual.getId());
+		} catch (InvalidIdException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		
 		
 	}
+	
 	@Test
-	public void Delete() throws InvalidIdException
+	public void Delete() 
 	{
 		Task t=new Task();
 		t.setId(1);
@@ -123,14 +133,23 @@ public class APITest {
 		t.setStatus(Status.Completed);
 		t.setDueDate(LocalDate.now());
 		
-		when(taskService.deleteTaskById(1)).thenReturn(t);
-		Task actual=taskService.getTaskById(2);
-		assertEquals(t.getId(),actual.getId());
+		try {
+			when(taskService.deleteTaskById(1)).thenReturn(t);
+			Task actual=taskService.deleteTaskById(1);
+			System.out.println(taskService.deleteTaskById(1));
+			assertEquals(t.getId(),actual.getId());
+		} catch (InvalidIdException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		
 		
 	}
+	
+
 	@Test
-	public void Update() throws InvalidIdException
+	public void Update() 
 	{
 		TaskDto dto=new TaskDto();
 		dto.setTitle("ABC");
@@ -148,13 +167,21 @@ public class APITest {
 		t.setPriority(Priority.valueOf(dto.getPriority()));
 		t.setStatus(Status.valueOf(dto.getStatus()));
 		
-		when(taskService.updateTask(1, dto)).thenReturn(t);
-		Task actual=taskService.getTaskById(1);
-		assertEquals(t,actual);
+		try {
+			when(taskService.updateTask(1, dto)).thenReturn(t);
+			Task actual=taskService.updateTask(1, dto);
+			
+			assertEquals(t,actual);
+		} catch (InvalidIdException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		
 		
 	}
 	
-
 }
+
+
 

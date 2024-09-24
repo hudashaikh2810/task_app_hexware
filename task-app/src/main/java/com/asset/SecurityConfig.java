@@ -42,12 +42,12 @@ public class SecurityConfig {
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 );
-
+/*The control fist comer here now we have placed the jwt request filter before UsernamePasswordAuthentication filter so the control goes to jwt filter*/
         http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
-
+/*It processes the authentication request made by user*/
     @Bean
      AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
@@ -57,7 +57,7 @@ public class SecurityConfig {
      PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
+/*It retreives the data from UserDetails method*/
     @Bean
      DaoAuthenticationProvider authenticationProvider(UserDetailsService userDetailsService, PasswordEncoder passwordEncoder) {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();

@@ -16,6 +16,9 @@ import jakarta.persistence.Id;
 @Entity
 public class Task {
 	@Id
+	/*Auto there a sequence will be created by hibernate which will be followed by all tables*/
+	/*
+	 * */
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int id; 
 	private String title;

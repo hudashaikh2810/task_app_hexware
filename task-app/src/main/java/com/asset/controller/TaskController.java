@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.asset.dto.MessageDto;
 import com.asset.dto.TaskDto;
@@ -51,8 +52,8 @@ public ResponseEntity<?> getAll(MessageDto dto)
 		return ResponseEntity.badRequest().body(dto);
 	}
 }
-@GetMapping("/byId/{id}")
-public ResponseEntity<?> getTaskById(@PathVariable int id,MessageDto dto)
+@GetMapping("/byId")
+public ResponseEntity<?> getTaskById(@RequestParam int id,MessageDto dto)
 {
 	try {
 		Task t=taskService.getTaskById(id);
@@ -105,3 +106,7 @@ public ResponseEntity<?> updateTaskById(@RequestBody TaskDto taskDto,@PathVariab
 
 
 }
+/*@PathVariable-is used to extract the values of uri template
+ * i.e it is used to extract data from uri template in url from specific resouce.
+ * It is used for those paramters which are mandatory.
+ * @RequestParam-extract data from query parameters.It is encoded.It is optional parameter*/

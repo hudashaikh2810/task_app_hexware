@@ -5,6 +5,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,23 +22,17 @@ import com.asset.repo.TaskRepository;
 public class TaskService {
 	@Autowired
 	private TaskRepository taskRepository;
+	Logger logger=LoggerFactory.getLogger(TaskService.class);
+	
 	public Task addTask(TaskDto dto)
 	{
 		Task t=new Task();
 	t.setTitle(dto.getTitle());
 	t.setDescription(dto.getDescription());
-	if(dto.getPriority().equalsIgnoreCase("Low"))
-		t.setPriority(Priority.Low);
-	if(dto.getPriority().equalsIgnoreCase("High"))
-		t.setPriority(Priority.High);
-	if(dto.getPriority().equalsIgnoreCase("Medium"))
-		t.setPriority(Priority.Medium);
-	if(dto.getStatus().equalsIgnoreCase("Pending"))
-		t.setStatus(Status.Pending);
-	if(dto.getStatus().equalsIgnoreCase("InProgress"))
-		t.setStatus(Status.InProgress);
-	if(dto.getStatus().equalsIgnoreCase("Completed"))
-		t.setStatus(Status.Completed);
+	t.setPriority(Priority.valueOf(dto.getPriority()));
+	logger.info("Priortiy set");
+	t.setStatus(Status.valueOf(dto.getStatus()));
+
 	String date=dto.getDate();
 	
 
@@ -70,14 +66,23 @@ public class TaskService {
 			throw new InvalidInputException("Task priority should have valid value");
 
 		}
-		if(priority.equalsIgnoreCase("low")||priority.equalsIgnoreCase("meidum")||priority.equalsIgnoreCase("high"))
+	
+		Priority[] p=Priority.values();
+	int count=0;	
+		for(Priority po:p)
 		{
-			
+			if(po.toString().contentEquals(priority))
+				{
+				
+count=1;
+break;
+				}
 		}
-		else
+		if(count==0)
 		{
-			throw new InvalidInputException("Task priority can be medium,high or low");
+			throw new InvalidInputException("Priortiy can be high ,mid or low");
 		}
+	
 		String status=t.getStatus();
 		if(status==null||status.equals(""))
 		{
@@ -133,18 +138,8 @@ public class TaskService {
 		Task t=optionalTask.get();
 		t.setTitle(taskDto.getTitle());
 		t.setDescription(taskDto.getDescription());
-		if(taskDto.getPriority().equalsIgnoreCase("Low"))
-			t.setPriority(Priority.Low);
-		if(taskDto.getPriority().equalsIgnoreCase("High"))
-			t.setPriority(Priority.High);
-		if(taskDto.getPriority().equalsIgnoreCase("Medium"))
-			t.setPriority(Priority.Medium);
-		if(taskDto.getStatus().equalsIgnoreCase("Pending"))
-			t.setStatus(Status.Pending);
-		if(taskDto.getStatus().equalsIgnoreCase("InProgress"))
-			t.setStatus(Status.InProgress);
-		if(taskDto.getStatus().equalsIgnoreCase("Completed"))
-			t.setStatus(Status.Completed);
+		t.setPriority(Priority.valueOf(taskDto.getPriority()));
+		t.setStatus(Status.valueOf(taskDto.getStatus()));
 		String date=taskDto.getDate();
 		
 

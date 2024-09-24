@@ -29,7 +29,8 @@ public class MyUserDetailsService implements UserDetailsService {
     }
 }
  
-
+/*Collection.singleTonList creates an immutable list which contains a single element*/
+//*Simple Granted authority stores in form of string the authorization to authenticated user*/
 
 
 
